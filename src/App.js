@@ -1,136 +1,190 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import { setupWebSocket } from './websocket';
 
 function App() {
-  const [locationData, setLocationData] = useState(null);
-  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  const [locations, setLocations] = useState({}); // 각 scanner_id별 위치 데이터를 저장
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 }); // 이미지 사이즈 상태
   const imageRef = useRef(null);
 
-  // 위치 정보를 가져오는 함수
-  const fetchLocationData = () => {
-    fetch('http://localhost:3001/estimated_location')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const latestLocation = data[data.length - 1]; // 가장 최신 위치 정보
-        setLocationData(latestLocation); // 위치 데이터 설정
-      })
-      .catch((error) => console.error('Error fetching location data:', error));
+  // 이미지 크기 업데이트 함수
+  const updateImageSize = () => {
+    if (imageRef.current) {
+      setImageSize({
+        width: imageRef.current.clientWidth,
+        height: imageRef.current.clientHeight,
+      });
+    }
   };
 
-  // 처음 마운트 될 때 위치 정보를 한 번 가져오고, 10초마다 갱신
   useEffect(() => {
-    fetchLocationData(); // 첫 번째 위치 정보 요청
-    const interval = setInterval(() => {
-      fetchLocationData(); // 10초마다 위치 정보 갱신
-    }, 10000);
+    // 이미지 로딩 시 크기 설정
+    updateImageSize();
+    window.addEventListener('resize', updateImageSize); // 창 크기 변경 시 이미지 크기 업데이트
 
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 해제
-  }, []);
-
-  // 이미지의 크기를 기준으로 좌표를 비율로 계산하는 함수
-  useEffect(() => {
-    const updateImageSize = () => {
-      if (imageRef.current) {
-        setImageSize({
-          width: imageRef.current.clientWidth,
-          height: imageRef.current.clientHeight,
-        });
-      }
+    return () => {
+      window.removeEventListener('resize', updateImageSize);
     };
-
-    window.addEventListener('resize', updateImageSize); // 창 크기 변경 시 이미지 크기 갱신
-    updateImageSize(); // 초기 이미지 크기 설정
-    return () => window.removeEventListener('resize', updateImageSize);
   }, []);
 
-  // 좌표 계산 함수 (이미지의 크기에 비례하여 계산)
+  // 웹소켓 설정
+  useEffect(() => {
+    const cleanupWebSocket = setupWebSocket((message) => {
+      const data = JSON.parse(message); // 서버에서 수신한 메시지를 JSON으로 변환
+      console.log('웹소켓으로 받은 데이터:', data); // 수신된 데이터 확인을 위한 로그
+
+      // scanner_id에 따라 위치 데이터를 업데이트
+      setLocations((prevLocations) => ({
+        ...prevLocations,
+        [data.scanner_id]: data, // 해당 scanner_id의 위치 정보 업데이트
+      }));
+    });
+
+    return () => {
+      cleanupWebSocket(); // 컴포넌트 언마운트 시 WebSocket 연결 종료
+    };
+  }, []);
+
+  const ICON_SIZE = 50;  // 아이콘의 너비와 높이를 50px로 설정
+  const HALF_ICON_SIZE = ICON_SIZE / 2;  // 아이콘 크기의 절반
+
+  // 구역의 x 좌표를 계산하는 함수
   const getLeftPosition = (zone, imageWidth) => {
-    const baseWidth = 1044; // 이미지의 원래 너비 (1044px 기준)
-    const positions = {
-      A_1: (775+50 / baseWidth) * imageWidth,
-      A_2: (558 / baseWidth) * imageWidth,
-      A_3: (361 / baseWidth) * imageWidth,
-      B_1: (264 / baseWidth) * imageWidth,
-      B_2: (4 / baseWidth) * imageWidth,
-      C_1: (180 / baseWidth) * imageWidth,
-      C_2: (181 / baseWidth) * imageWidth,
-      C_3: (180 / baseWidth) * imageWidth,
-      D_1: (262 / baseWidth) * imageWidth,
-      D_2: ((3+25) / baseWidth) * imageWidth,
-      E_1: ((775+(((909-775)/2)-50)) / baseWidth) * imageWidth,
-      E_2: ((574+(((775-574)/2)-50)) / baseWidth) * imageWidth,
-      E_3: (365 / baseWidth) * imageWidth,
+    const zoneCoords = {
+      A_1: [775, 1040], A_2: [558, 775], A_3: [361, 559], B_1: [264, 362], B_2: [4, 265],
+      C_1: [180, 294], C_2: [181, 293], C_3: [180, 293], D_1: [262, 365], D_2: [3, 263],
+      E_1: [775, 909], E_2: [574, 775], E_3: [365, 575]
     };
-    return positions[zone] || 0;
+
+    const coords = zoneCoords[zone];
+    if (!coords) return 0;
+
+    // (오른쪽 좌표 - 왼쪽 좌표) / 2 => 중간 위치, 아이콘의 왼쪽 위치를 맞추기 위해 25px을 뺌
+    return (coords[1] - coords[0]) / 2 + coords[0] - HALF_ICON_SIZE;
   };
 
-
+  // 구역의 y 좌표를 계산하는 함수
   const getTopPosition = (zone, imageHeight) => {
-    const baseHeight = 920; // 이미지의 원래 높이 (920px 기준)
-    const positions = {
-      A_1: (685 / baseHeight) * imageHeight,
-      A_2: (712 / baseHeight) * imageHeight,
-      A_3: (712 / baseHeight) * imageHeight,
-      B_1: (712 / baseHeight) * imageHeight,
-      B_2: (711 / baseHeight) * imageHeight,
-      C_1: (537 / baseHeight) * imageHeight,
-      C_2: (362 / baseHeight) * imageHeight,
-      C_3: (196 / baseHeight) * imageHeight,
-      D_1: (43 / baseHeight) * imageHeight,
-      D_2: (90 / baseHeight) * imageHeight,
-      E_1: ((47+(((226-47)/2)-50))/ baseHeight) * imageHeight,
-      E_2: ((91+(((202-91)/2)-50))/ baseHeight) * imageHeight,
-      E_3: (92 / baseHeight) * imageHeight,
+    const zoneCoords = {
+      A_1: [685, 829], A_2: [712, 825], A_3: [712, 825], B_1: [712, 876], B_2: [711, 826],
+      C_1: [537, 721], C_2: [362, 537], C_3: [196, 362], D_1: [43, 201], D_2: [90, 198],
+      E_1: [47, 226], E_2: [91, 202], E_3: [92, 201]
     };
-    return positions[zone] || 0;
-  };
 
-  return (
-    <div className="App">
-      <div className="Map">
-        {/* 이미지 크기 및 위치 계산을 위한 ref 사용 */}
-        <img
-          ref={imageRef}
-          src={process.env.PUBLIC_URL + '/assets/map.png'}
-          useMap="#imgmap"
-          alt="Map"
-        />
-        <map id="imgmap" name="imgmap">
-          <area shape="rect" alt="A_1" id="A_1" coords="775,685,1040,829" href="" />
-          <area shape="rect" alt="A_2" id="A_2" coords="558,712,775,825" href="" />
-          <area shape="rect" alt="A_3" id="A_3" coords="361,712,559,825" href="" />
-          <area shape="rect" alt="B_1" id="B_1" coords="264,712,362,876" href="" />
-          <area shape="rect" alt="B_2" id="B_2" coords="4,711,265,826" href="" />
-          <area shape="rect" alt="C_1" id="C_1" coords="180,537,294,721" href="" />
-          <area shape="rect" alt="C_2" id="C_2" coords="181,362,293,537" href="" />
-          <area shape="rect" alt="C_3" id="C_3" coords="180,196,293,362" href="" />
-          <area shape="rect" alt="D_1" id="D_1" coords="262,43,365,201" href="" />
-          <area shape="rect" alt="D_2" id="D_2" coords="3,90,263,198" href="" />
-          <area shape="rect" alt="E_1" id="E_1" coords="775,47,909,226" href="" />
-          <area shape="rect" alt="E_2" id="E_2" coords="574,91,775,202" href="" />
-          <area shape="rect" alt="E_3" id="E_3" coords="365,92,575,201" href="" />
-        </map>
- 
-        {/* 특정 구역에 아이콘을 렌더링 */}
-        {locationData && (
+  const coords = zoneCoords[zone];
+  if (!coords) return 0;
+
+  // (아래쪽 좌표 - 위쪽 좌표) / 2 => 중간 위치, 아이콘의 위쪽 위치를 맞추기 위해 25px을 뺌
+  return (coords[1] - coords[0]) / 2 + coords[0] - HALF_ICON_SIZE;
+};
+
+
+  // 작업자의 위치를 맵 이미지 위에 표시하는 함수
+  const renderWorkerPositions = () => {
+    return Object.values(locations).map((locationData) => {
+      const { scanner_id, zone } = locationData; // zone이 있다고 가정
+      return (
+
           <div
+            key={scanner_id}
             className="location-icon"
             style={{
               position: 'absolute',
-              left: `${getLeftPosition(locationData.zone, imageSize.width)}px`,
-              top: `${getTopPosition(locationData.zone, imageSize.height)}px`,
-              width: '100px',
-              height: '100px',
+              left: `${getLeftPosition(zone, imageSize.width)}px`, // 존 좌표에 따른 x 좌표
+              top: `${getTopPosition(zone, imageSize.height)}px`,  // 존 좌표에 따른 y 좌표
+              width: '50px',
+              height: '50px',
+
               backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/iconlocation.gif'})`,
               backgroundSize: 'cover',
             }}
+
+            >
+            {/* 작업자 ID를 아이콘 위에 표시 */}
+            <span
+              style={{
+                position: 'absolute',
+                top: '-20px', // 아이콘 위에 텍스트를 표시하기 위해 위로 이동
+                left: '50%',
+                padding: '0px 3px 0px 3px',
+                transform: 'translateX(-50%)',
+                color: 'black', // 텍스트 색상
+                backgroundColor: '#30e875', // 배경
+                fontWeight: 'bold', // 텍스트 강조
+                borderRadius: '15px',
+                whiteSpace: 'nowrap', //줄내림 방지
+                fontSize: '12px'
+              }}
+            >
+                Worker {scanner_id} 
+            </span>
+          </div>
+      );
+    });
+  };
+
+  return (
+
+    <div className="App" style={{ position: 'relative' }}>
+      <div className='Wrap' style={{width: '100vw'}}>
+        <div className='Logo' style={{width:'80px',height:'40px', }}>logo</div>
+        <div className="Map">
+          <img
+            ref={imageRef}
+            src={process.env.PUBLIC_URL + '/assets/map.png'}
+            useMap="#imgmap"
+            alt="Map"
           />
-        )}
+          {renderWorkerPositions()} {/* 여러 작업자 위치 표시 */}
+
+          {/* 이미지 맵 영역 */}
+          <map id="imgmap" name="imgmap">
+            <area shape="rect" alt="A_1" coords="775,685,1040,829" href="" />
+            <area shape="rect" alt="A_2" coords="558,712,775,825" href="" />
+            <area shape="rect" alt="A_3" coords="361,712,559,825" href="" />
+            <area shape="rect" alt="B_1" coords="264,712,362,876" href="" />
+            <area shape="rect" alt="B_2" coords="4,711,265,826" href="" />
+            <area shape="rect" alt="C_1" coords="180,537,294,721" href="" />
+            <area shape="rect" alt="C_2" coords="181,362,293,537" href="" />
+            <area shape="rect" alt="C_3" coords="180,196,293,362" href="" />
+            <area shape="rect" alt="D_1" coords="262,43,365,201" href="" />
+            <area shape="rect" alt="D_2" coords="3,90,263,198" href="" />
+            <area shape="rect" alt="E_1" coords="775,47,909,226" href="" />
+            <area shape="rect" alt="E_2" coords="574,91,775,202" href="" />
+            <area shape="rect" alt="E_3" coords="365,92,575,201" href="" />
+          </map>
+        </div>
+
+
+
+
+        {/* <div>
+          {Object.values(locations).map((locationData) => (
+            <p key={locationData.scanner_id}>
+              작업자 {locationData.scanner_id} 위치: {locationData.zone}
+            </p>
+          ))}
+        </div> */}
+        
+        
+        
+        
+        <footer 
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            width: '100%',
+            height: '100px',
+            left: '0px',
+            top: '1200px',
+            background: '#F5F5F5',
+            fontSize: '20px'
+          }}>
+            ⓒ 2024. Em0yes. All right reserved        
+        </footer>
       </div>
     </div>
   );
