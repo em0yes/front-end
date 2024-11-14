@@ -1,1 +1,21 @@
 /* App.css */
+/* 아이콘 호버 시 작업자 ID 표시 */
+.location-icon:hover .worker-id {
+    visibility: visible;
+  }
+
+  html, body, #root {
+    width: 100vw;  /* 뷰포트의 너비에 맞춤 */
+    height: 100vh; /* 뷰포트의 높이에 맞춤 */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* 스크롤 제거 */
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  
