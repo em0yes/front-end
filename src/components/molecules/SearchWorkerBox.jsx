@@ -3,28 +3,33 @@ import styled from "styled-components";
 import axios from "axios";
 
 const SearchWorkerWrapper = styled.div`
-    width: 85%;
-    height: 350px;
+    width: 80%;
+    height: 800px;
     background: #FFFFFF;
     box-shadow: 0px 0px 20px rgba(188, 188, 188, 0.6);
     border-radius: 30px;
+    display: flex;
+    flex-direction:column;
     padding: 30px;
     overflow-y: auto;
 `;
 
 const SearchInputWrapper = styled.div`
-    width: 335px;
+    width: 90%;
     height: 50px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     display: flex;
+    justify-content:center;
     align-items: center;
+    padding:10px;margin-left:80px;
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;
 `;
 
 const SearchInput = styled.input`
     flex: 1;
+
     border: none;
     padding: 8px;
     font-size: 16px;
@@ -78,7 +83,7 @@ const SearchWorkerBox = () => {
 
     return (
         <SearchWorkerWrapper>
-            <h2 style={{ textAlign: "center" }}>작업자 위치 검색</h2>
+            <h1 style={{ textAlign: "center" }}>작업자 위치 검색</h1>
             <SearchInputWrapper>
                 <SearchInput
                     type="text"
@@ -105,7 +110,7 @@ const SearchWorkerBox = () => {
                     </InfoRow>
                 </InfoTable>
             ) : (
-                <p style={{ textAlign: "center", color: "#888" }}>검색 결과가 없습니다.</p>
+                <p style={{ textAlign: "center", color: "#888", visibility : "hidden"}}>검색 결과가 없습니다.</p>
             )}
         </SearchWorkerWrapper>
     );

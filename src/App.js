@@ -190,14 +190,13 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import Home from './components/pages/Home';
-import RealTimeLocationMonitoring from './components/pages/RealTimeLocationMonitoring'
-import Preparing from './components/pages/Preparing';
-import LoginPage from './components/pages/Login';
 import PageWrapper from './components/layout/PageWrapper'; 
-import SearchWorker from './components/pages/SearchWorker';
-import WorkerMapping from './components/pages/WorkerMapping'
+import Home from './pages/Home';
+import RealTimeLocationMonitoring from './pages/RealTimeLocationMonitoring'
+import Preparing from './pages/Preparing';
+import LoginPage from './pages/Login';
+import SearchWorker from './pages/SearchWorker';
+import WorkerMapping from './pages/WorkerMapping'
 
 const App = () => {
   return (

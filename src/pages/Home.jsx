@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../layout/Header";
+import Header from "../components/layout/Header";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import PlaceButton from "../atoms/PlaceButton";
+import PlaceButton from "../components/atoms/PlaceButton";
 
 const SearchPlaceWrapper = styled.div`
     width:100%;
@@ -13,13 +13,13 @@ const SearchPlaceWrapper = styled.div`
     flex-wrap: wrap; /* 줄바꿈 허용 */
 `;
 const BeaconScannerButton = styled.img`
-    z-index:1;
-    position: absolute;
+    z-index: 1;
+    position: fixed;
     width: 80px;
     height: 120px;
-    left: 1850px;
-    top: 180px;
-`
+    left: 95vw; /* 뷰포트 너비의 95% */
+    top: 10vh; /* 뷰포트 높이의 10% */
+`;
 
 function Home(){
     return (

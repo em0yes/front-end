@@ -57,7 +57,7 @@ const BeaconList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {beacons.slice(0, 5).map((beacon, index) => (
+                    {beaconsScanner.slice(0, 5).map((beacon, index) => (
                         <TableRow key={index}>
                             <TableData>{beacon.number}</TableData>
                             <TableData>{beacon.zone}</TableData>

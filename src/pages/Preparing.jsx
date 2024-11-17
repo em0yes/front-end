@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
-import Navbar from '../molecules/Navbar';
-import PageWrapper from '../layout/PageWrapper';
-import { setupWebSocket } from '../../websocket';
-import styled from 'styled-components';
+import Header from '../components/layout/Header';
+import Navbar from '../components/molecules/Navbar';
+import { setupWebSocket } from '../websocket';
 
 function  Preparing() {
     const [locations, setLocations] = useState({});

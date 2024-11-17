@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Header from "../layout/Header";
-import ClickButton from "../atoms/ClickButton";
-import Input from "../atoms/Input";
+import Header from "../components/layout/Header";
+import ClickButton from "../components/atoms/ClickButton";
+import Input from "../components/atoms/Input";
 import { Link, useNavigate } from "react-router-dom"; // Link 컴포넌트 추가
-import client from "../../lib/client";
+import client from "../lib/client";
 
 const LoginText = styled.h1`
     font-size: 30px;

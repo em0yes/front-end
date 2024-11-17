@@ -51,7 +51,7 @@ const Navbar = ({ middleIcon }) => {
         <Link to={linkPath}><Icon src={middleIcon} alt={middleIcon.alt}/></Link>
 
         {/* 고정 아이콘 */}
-        <Link to="/RealtimeLocation"><Icon src="/assets/Icon/Navbar/Navbar_alertIcon.svg" alt="Alert" /></Link>
+        <Link to="/RealtimeLocationMonitoring"><Icon src="/assets/Icon/Navbar/Navbar_alertIcon.svg" alt="Alert" /></Link>
       </NavbarSection>
     </NavbarWrapper>
   );

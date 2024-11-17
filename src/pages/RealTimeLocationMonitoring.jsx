@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../layout/Header';
-import Navbar from '../molecules/Navbar';
-import FloorButton from '../atoms/FloorButton';
-import { setupWebSocket } from '../../websocket';
+import Header from '../components/layout/Header';
+import Navbar from '../components/molecules/Navbar';
+import FloorButton from '../components/atoms/FloorButton';
+import { setupWebSocket } from '../websocket';
 import styled from 'styled-components';
 
 
@@ -44,69 +44,159 @@ const SoonOverlay = styled.img`
 
 function  RealTimeLocationMonitoring() {
     const [locations, setLocations] = useState({});
+    const [lastUpdateTimes, setLastUpdateTimes] = useState({}); // 각 scanner_id별로 마지막 수신 시간을 저장
     const [activeFloor, setActiveFloor] = useState(3); // 초기 활성화 상태를 3층으로 설정
 
-    // 버튼 클릭 시 활성화된 층을 업데이트하는 함수
-    const handleFloorClick = (floor) => {
-        setActiveFloor(floor);
-    };
+
 
     // 웹소켓 설정
+
     useEffect(() => {
         const cleanupWebSocket = setupWebSocket((message) => {
-        try {
-            const data = JSON.parse(message);
-            if (!data.scanner_id || !data.zone) {
-            throw new Error('Invalid data format');
-            }
-
-            // scanner_id에 따라 위치 데이터를 업데이트
-            setLocations((prevLocations) => ({
+        const data = JSON.parse(message); // 서버에서 수신한 메시지를 JSON으로 변환
+        console.log('웹소켓으로 받은 데이터:', data); // 수신된 데이터 확인을 위한 로그
+        const currentTime = Date.now(); // 현재 시간을 기록
+    
+        // 위치 데이터를 업데이트하고, 마지막 수신 시간을 기록
+        setLocations((prevLocations) => ({
             ...prevLocations,
             [data.scanner_id]: data, // 해당 scanner_id의 위치 정보 업데이트
-            }));
-        } catch (error) {
-            console.error('WebSocket message error:', error);
-        }
+        }));
+    
+        setLastUpdateTimes((prevTimes) => ({
+            ...prevTimes,
+            [data.scanner_id]: currentTime, // 해당 scanner_id의 마지막 업데이트 시간 기록
+        }));
         });
-
+    
+        // 주기적으로 데이터를 검사하여 2분 동안 업데이트가 없는 데이터를 제거
+        const intervalId = setInterval(() => {
+        const currentTime = Date.now();
+        setLocations((prevLocations) => {
+            const updatedLocations = { ...prevLocations };
+    
+            Object.keys(lastUpdateTimes).forEach((scanner_id) => {
+            // 마지막 업데이트 후 2분(120초) 이상 경과한 데이터를 제거
+            if (currentTime - lastUpdateTimes[scanner_id] > 120000) {
+                delete updatedLocations[scanner_id]; // 지도에서 해당 데이터 제거
+            }
+            });
+    
+            return updatedLocations;
+        });
+        }, 5000); // 5초마다 검사
+    
         return () => {
-        cleanupWebSocket();
+        cleanupWebSocket(); // 컴포넌트 언마운트 시 WebSocket 연결 종료
+        clearInterval(intervalId); // 주기적 검사 중지
         };
-    }, []);
+    }, [lastUpdateTimes]);
+    
 
-    // 특정 구역을 하이라이트하는 함수
+    // // 특정 구역을 하이라이트하는 함수
+    // const highlightZone = (zoneId) => {
+    //     const zoneElement = document.getElementById(zoneId);
+    //     if (zoneElement) {
+    //     zoneElement.style.stroke = '#FAFABE'; // 테두리 색상 변경
+    //     zoneElement.style.strokeWidth = '2'; // 테두리 두께 변경
+    //     zoneElement.style.fill = '#f4ff77'; // 채우기 색상 변경 
+    //     }
+       
+    // };
+
+    // // 모든 구역 초기화 함수
+    // const resetZones = () => {
+    //     const zones = document.querySelectorAll('path'); // 모든 path 요소 선택
+    //     zones.forEach((zoneElement) => {
+    //     zoneElement.style.stroke = ''; // 테두리 색상 초기화
+    //     zoneElement.style.backgroundImage = "";
+    //     zoneElement.style.strokeWidth = ''; // 테두리 두께 초기화
+    //     zoneElement.style.fill = '#d5d5d5'; // 기본 색상으로 초기화
+    //     });
+
+
+    // };
+
+
+    // // 작업자 위치에 따른 구역 강조
+    // useEffect(() => {
+    //     resetZones(); // 모든 구역 초기화
+    //     Object.values(locations).forEach((locationData) => {
+    //     const { zone } = locationData;
+    //     if (zone) {
+    //         highlightZone(zone); // 해당 구역 하이라이트
+    //     }
+    //     });
+    // }, [locations]);
+
+    // 버튼 클릭 시 활성화된 층을 업데이트하는 함수
+    
+    const addGifToZone = (zoneId, gifPath) => {
+        const zoneElement = document.getElementById(zoneId);
+        if (zoneElement) {
+            const svgNS = "http://www.w3.org/2000/svg";
+            const gifImage = document.createElementNS(svgNS, "image");
+    
+            gifImage.setAttribute("href", gifPath); // GIF 경로 설정
+            const bbox = zoneElement.getBBox(); // 구역 위치 및 크기 가져오기
+            gifImage.setAttribute("x", bbox.x);
+            gifImage.setAttribute("y", bbox.y);
+            gifImage.setAttribute("width", bbox.width);
+            gifImage.setAttribute("height", bbox.height);
+    
+            const existingGif = zoneElement.parentNode.querySelector(`image[data-zone='${zoneId}']`);
+            if (existingGif) {
+                zoneElement.parentNode.removeChild(existingGif);
+            }
+    
+            gifImage.setAttribute("data-zone", zoneId);
+            zoneElement.parentNode.appendChild(gifImage);
+        }
+    };
+    
+    // 특정 구역 하이라이트 함수
     const highlightZone = (zoneId) => {
         const zoneElement = document.getElementById(zoneId);
         if (zoneElement) {
-        zoneElement.style.stroke = '#FAFABE'; // 테두리 색상 변경
-        zoneElement.style.strokeWidth = '2'; // 테두리 두께 변경
-        // zoneElement.style.fill = '#FFCC00'; // 채우기 색상 변경 (예시로 노란색 적용)
+            zoneElement.style.stroke = '#FAFABE';
+            zoneElement.style.strokeWidth = '2';
+            zoneElement.style.fill = '#f4ff77';
+    
+            // GIF 이미지 추가
+            addGifToZone(zoneId, "/assets/Icon/Main/Main_iconlocation.gif");
         }
     };
-
+    
     // 모든 구역 초기화 함수
     const resetZones = () => {
-        const zones = document.querySelectorAll('path'); // 모든 path 요소 선택
+        const zones = document.querySelectorAll('path');
         zones.forEach((zoneElement) => {
-        zoneElement.style.stroke = ''; // 테두리 색상 초기화
-        zoneElement.style.strokeWidth = ''; // 테두리 두께 초기화
-        zoneElement.style.fill = '#D9D9D9'; // 기본 색상으로 초기화
+            zoneElement.style.stroke = '';
+            zoneElement.style.strokeWidth = '';
+            zoneElement.style.fill = '';
+    
+            const existingGif = zoneElement.parentNode.querySelector(`image[data-zone='${zoneElement.id}']`);
+            if (existingGif) {
+                zoneElement.parentNode.removeChild(existingGif);
+            }
         });
     };
-
+    
     // 작업자 위치에 따른 구역 강조
     useEffect(() => {
         resetZones(); // 모든 구역 초기화
         Object.values(locations).forEach((locationData) => {
-        const { zone } = locationData;
-        if (zone) {
-            highlightZone(zone); // 해당 구역 하이라이트
-        }
+            const { zone } = locationData;
+            if (zone) {
+                highlightZone(zone); // 특정 구역 강조 및 GIF 추가
+            }
         });
     }, [locations]);
 
-
+    
+    const handleFloorClick = (floor) => {
+        setActiveFloor(floor);
+    };
 
     
     return (
@@ -130,7 +220,7 @@ function  RealTimeLocationMonitoring() {
                 >
                 <g id="Map">
                 <g id="Hall_B">
-                    <path id="A_24" d="M0 732V656H43V732H0Z" fill="#D9D9D9"/>
+                    <path id="A_24" d="M0 732V656H43V732H0Z" fill="#D9D9D9" />
                     <path id="A_23" d="M43 732V656H86V732H43Z" fill="#D9D9D9"/>
                     <path id="A_22" d="M86 732V656H129V732H86Z" fill="#D9D9D9"/>
                     <path id="A_21" d="M129 732V656H172V732H129Z" fill="#D9D9D9"/>
