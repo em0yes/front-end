@@ -17,8 +17,13 @@ const BeaconScannerButton = styled.img`
     position: fixed;
     width: 80px;
     height: 120px;
-    left: 95vw; /* 뷰포트 너비의 95% */
-    top: 10vh; /* 뷰포트 높이의 10% */
+
+    /* 뷰포트 기준 상대적인 위치 */
+    left: calc(1920px - 100px); /* 화면 오른쪽에서 약간 떨어지도록 조정 */
+    top: 10vh; /* 화면 위쪽에서 10% 내려오게 설정 */
+
+    /* 중앙 정렬 보정 */
+    transform: translateX(-50%);
 `;
 
 function Home(){
