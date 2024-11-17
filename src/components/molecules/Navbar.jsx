@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const NavbarWrapper = styled.div`
   width: 160px;
   height: 840px;
-  background-color: #ffffff;
   padding: 30px;
   display: flex;
   flex-direction: column;

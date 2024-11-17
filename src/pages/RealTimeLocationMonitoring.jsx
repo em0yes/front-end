@@ -20,9 +20,18 @@ const Map = styled.div`
     display:flex;
     width: 1920px;
     height:870px;
-    margin-top: 15px;
-    margin-bottom:15px;
+    margin: 0 auto; /* 중앙 정렬 */
+
     justify-content:space-between;
+`;
+
+const BlurredMapImageWrapper = styled.div`
+    flex: 1; /* 나머지 공간을 지도에 할당 */
+    /* margin-top: 15px; */
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    position: relative; /* Overlay를 위한 relative */
 `;
 const BlurredMapImage = styled.img`
     margin-left:50px;
@@ -93,43 +102,6 @@ function  RealTimeLocationMonitoring() {
     }, [lastUpdateTimes]);
     
 
-    // // 특정 구역을 하이라이트하는 함수
-    // const highlightZone = (zoneId) => {
-    //     const zoneElement = document.getElementById(zoneId);
-    //     if (zoneElement) {
-    //     zoneElement.style.stroke = '#FAFABE'; // 테두리 색상 변경
-    //     zoneElement.style.strokeWidth = '2'; // 테두리 두께 변경
-    //     zoneElement.style.fill = '#f4ff77'; // 채우기 색상 변경 
-    //     }
-       
-    // };
-
-    // // 모든 구역 초기화 함수
-    // const resetZones = () => {
-    //     const zones = document.querySelectorAll('path'); // 모든 path 요소 선택
-    //     zones.forEach((zoneElement) => {
-    //     zoneElement.style.stroke = ''; // 테두리 색상 초기화
-    //     zoneElement.style.backgroundImage = "";
-    //     zoneElement.style.strokeWidth = ''; // 테두리 두께 초기화
-    //     zoneElement.style.fill = '#d5d5d5'; // 기본 색상으로 초기화
-    //     });
-
-
-    // };
-
-
-    // // 작업자 위치에 따른 구역 강조
-    // useEffect(() => {
-    //     resetZones(); // 모든 구역 초기화
-    //     Object.values(locations).forEach((locationData) => {
-    //     const { zone } = locationData;
-    //     if (zone) {
-    //         highlightZone(zone); // 해당 구역 하이라이트
-    //     }
-    //     });
-    // }, [locations]);
-
-    // 버튼 클릭 시 활성화된 층을 업데이트하는 함수
     
     const addGifToZone = (zoneId, gifPath) => {
         const zoneElement = document.getElementById(zoneId);
@@ -215,7 +187,8 @@ function  RealTimeLocationMonitoring() {
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1032 800"
-                style={{ width: '1084px', height: '840px', marginLeft:"50px"}}
+                style={{ width: '1084px', height: '840px', marginLeft:"50px" ,marginTop: "15px"
+                }}
                 fill="cover"
                 >
                 <g id="Map">
@@ -723,14 +696,14 @@ function  RealTimeLocationMonitoring() {
                 </svg>
             ) : (
 
-                <>
+                <BlurredMapImageWrapper>
                 <BlurredMapImage
                     src="assets/Map/Map_for_blur.png"
                     alt="Map_for_blur"
                     blur //블러 처리
                 />
                 <SoonOverlay src="/assets/Map/Soon.gif" alt="Soon" />
-                </>
+                </BlurredMapImageWrapper>
             )}
             <FloorButtonWrapper>
                 {[1, 2, 3, 4,5].map((floor) => (
