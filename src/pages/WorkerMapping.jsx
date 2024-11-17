@@ -97,7 +97,7 @@ function WorkerMapping() {
     useEffect(() => {
         const fetchWorkerData = async () => {
             try {
-                const response = await axios.get("/api/worker/setworker");
+                const response = await axios.get("http://localhost:8080/api/worker/setworker");
                 setWorkerData(response.data); // 서버에서 받은 데이터 배열 형식으로 저장
             } catch (error) {
                 console.error("Error fetching worker data:", error);
