@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 
 const SearchWorkerWrapper = styled.div`
     width: 80%;
-    height: 800px;
+    height: auto;
     background: #FFFFFF;
     box-shadow: 0px 0px 20px rgba(188, 188, 188, 0.6);
     border-radius: 30px;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     padding: 30px;
     overflow-y: auto;
 `;
@@ -20,16 +19,16 @@ const SearchInputWrapper = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
-    padding:10px;margin-left:80px;
+    padding: 10px;
+    margin-left: 80px;
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;
 `;
 
 const SearchInput = styled.input`
     flex: 1;
-
     border: none;
     padding: 8px;
     font-size: 16px;
@@ -40,7 +39,7 @@ const SearchInput = styled.input`
 
 const SearchButton = styled.img`
     border: none;
-    padding:10px;
+    padding: 10px;
     background: none;
     cursor: pointer;
     font-size: 16px;
@@ -48,6 +47,8 @@ const SearchButton = styled.img`
 
 const InfoTable = styled.div`
     margin-top: 20px;
+    text-align: left;
+    width: 90%;
 `;
 
 const InfoRow = styled.div`
@@ -65,21 +66,13 @@ const Value = styled.span`
     text-align: right;
 `;
 
-const SearchWorkerBox = () => {
+const SearchWorkerBox = ({ onSearch, workerData, errorMessage }) => {
     const [searchQuery, setSearchQuery] = useState("");
-    const [workerData, setWorkerData] = useState(null);
 
-    // const handleSearch = async () => {
-    //     try {
-    //         const response = await axios.get(`/api/worker/search`, {
-    //             params: { worker: searchQuery }
-    //         });
-    //         setWorkerData(response.data);
-    //     } catch (error) {
-    //         console.error("Error fetching worker data:", error);
-    //         setWorkerData(null);
-    //     }
-    // };
+    // 검색 버튼 클릭 시 호출되는 함수
+    const handleSearch = () => {
+        onSearch(searchQuery);
+    };
 
     return (
         <SearchWorkerWrapper>
@@ -88,29 +81,38 @@ const SearchWorkerBox = () => {
                 <SearchInput
                     type="text"
                     placeholder="작업자를 입력해주세요"
-                    // value={searchQuery}
-                    // onChange={(e) => setSearchQuery(e.target.value)}onClick={handleSearch}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <SearchButton  src="/assets/Icon/Main/search.svg"></SearchButton>
+                <SearchButton
+                    src="/assets/Icon/Main/search.svg"
+                    onClick={handleSearch} // 검색 버튼 클릭 시 호출
+                />
             </SearchInputWrapper>
 
-            {workerData ? (
+            {/* 오류 메시지 표시 */}
+            {errorMessage && (
+                <div style={{ textAlign: 'center', color: 'red', marginTop: '10px' }}>
+                    {errorMessage}
+                </div>
+            )}
+
+            {/* 검색 결과 표시 */}
+            {workerData && (
                 <InfoTable>
                     <InfoRow>
-                        <Label>Worker Name</Label>
-                        {/* <Value>{workerData.worker}</Value> */}
+                        <Label>작업자:</Label>
+                        <Value>{workerData.worker}</Value>
                     </InfoRow>
                     <InfoRow>
-                        <Label>Scanner_id</Label>
-                        {/* <Value>{workerData.scanner_id}</Value> */}
+                        <Label>Scanner ID:</Label>
+                        <Value>{workerData.scanner_id}</Value>
                     </InfoRow>
                     <InfoRow>
-                        <Label>Current Location</Label>
-                        {/* <Value>{workerData.zone}</Value> */}
+                        <Label>현재 위치:</Label>
+                        <Value>{workerData.zone}</Value>
                     </InfoRow>
                 </InfoTable>
-            ) : (
-                <p style={{ textAlign: "center", color: "#888", visibility : "hidden"}}>검색 결과가 없습니다.</p>
             )}
         </SearchWorkerWrapper>
     );

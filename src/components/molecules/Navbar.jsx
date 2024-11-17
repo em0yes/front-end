@@ -44,7 +44,7 @@ const Navbar = ({ middleIcon }) => {
     <NavbarWrapper>
       <NavbarSection>
         {/* 고정 아이콘 */}
-        <Link to="/Home"><Icon src="/assets/Icon/Navbar/Navbar_HomeIcon.svg" alt="Home" /></Link>
+        <Link to="/Home"><Icon src="/assets/Icon/Navbar/Navbar_homeIcon.svg" alt="Home" /></Link>
         
         {/* 동적 가운데 아이콘 */}
         <Link to={linkPath}><Icon src={middleIcon} alt={middleIcon.alt}/></Link>
