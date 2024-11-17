@@ -30,7 +30,7 @@ const InputWorkerWrapper = styled.div`
 
 const ScannerBox = styled.div`
     width: 200px;
-    height: 330px;
+    height: 400px;
     text-align: center;
     margin: 20px;
 `;
@@ -82,7 +82,16 @@ const ActionButton = styled.button`
         opacity: 0.8;
     }
 `;
+const XButton = styled.img`
+    z-index: 1;
+    position: absolute; /* 부모 컨테이너(PageContainer)를 기준으로 위치 고정 */
+    width: 60px;
+    height: 60px;
 
+    /* 오른쪽 끝에서 약간 떨어지게 (1920px 범위 초과 방지) */
+    right: max(calc((100% - 1920px) / 2 + 60px), 60px); /* 60px을 최소값으로 설정 */
+    top: 16px; /* 고정된 높이 */
+`;
 function WorkerMapping() {
     const [workerData, setWorkerData] = useState([
         { scanner_id: 1, worker: "" },
@@ -122,7 +131,7 @@ function WorkerMapping() {
 
     const handleSave = async () => {
         try {
-            await axios.patch("/api/worker/saveworker", workerData); // workerData 배열을 서버에 보냄
+            await axios.patch("http://localhost:8080/api/worker/saveworker", workerData); // workerData 배열을 서버에 보냄
             alert("작업자 정보가 성공적으로 저장되었습니다.");
             setIsEditing(false);
         } catch (error) {
@@ -141,6 +150,9 @@ function WorkerMapping() {
 
             <PageContainer>
                 <WorkerMappingWrapper>
+                    <Link to="/Home">
+                        <XButton src="/assets/Icon/Main/Xcircle.svg" />
+                    </Link>
                     <InputWorkerWrapper>
                         {workerData.map((item) => (
                             <ScannerBox key={item.scanner_id}>

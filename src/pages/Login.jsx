@@ -35,14 +35,12 @@ const LinksWrapper = styled.div`
     gap: 20px; /* 링크 간격 설정 */
     margin-top: 20px;
 `;
-const StyledLink = styled(Link)`
-    font-size: 14px;
-    color: #585858;
-    text-decoration: none; /* 밑줄 제거 */
-    
-    &:hover {
-        color: #FFCECE; /* 호버 시 색상 변경 */
-    }
+
+const PageContainer = styled.div`
+    width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
+    max-width: 1920px; /* 최대 너비 고정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    position: relative; /* 자식 요소 기준점 설정 */
 `;
 const Message = styled.div`
   font-size: 14px;
@@ -129,34 +127,36 @@ const Login = () => {
                 username = "로그인해주세요"
             />
 
-            <LoginWrapper>
-                <UserImg src="/assets/Icon/Login/Login_Userimg.svg"/>
-                <InputWrapper>
-                    <TextWrapper>
-                        <TextName>아이디</TextName>
-                        <Input
-                        type="text"
-                        placeholder="아이디를 입력해주세요"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </TextWrapper>                
-                    <TextWrapper>
-                        <TextName>비밀번호</TextName>
-                        <Input
-                        type="password"
-                        placeholder="비밀번호를 입력해주세요"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </TextWrapper>                
-                    {message && <Message $isError={isError}>{message}</Message>}
-                </InputWrapper> 
-                
-                <ClickButton text="로그인" onClick={handleLoginClick}/>
+            <PageContainer>
+                <LoginWrapper>
+                    <UserImg src="/assets/Icon/Login/Login_Userimg.svg"/>
+                    <InputWrapper>
+                        <TextWrapper>
+                            <TextName>아이디</TextName>
+                            <Input
+                            type="text"
+                            placeholder="아이디를 입력해주세요"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </TextWrapper>                
+                        <TextWrapper>
+                            <TextName>비밀번호</TextName>
+                            <Input
+                            type="password"
+                            placeholder="비밀번호를 입력해주세요"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </TextWrapper>                
+                        {message && <Message $isError={isError}>{message}</Message>}
+                    </InputWrapper> 
+                    
+                    <ClickButton text="로그인" onClick={handleLoginClick}/>
 
 
-            </LoginWrapper>
+                </LoginWrapper>
+            </PageContainer>
         </>
     );
 } 
