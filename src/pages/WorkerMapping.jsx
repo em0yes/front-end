@@ -106,7 +106,7 @@ function WorkerMapping() {
     useEffect(() => {
         const fetchWorkerData = async () => {
             try {
-                const response = await axios.get("http://localhost/api/worker/setworker");
+                const response = await axios.get("http://localhost:8080/api/worker/setworker");
                 setWorkerData(response.data); // 서버에서 받은 데이터 배열 형식으로 저장
             } catch (error) {
                 console.error("Error fetching worker data:", error);
@@ -131,7 +131,7 @@ function WorkerMapping() {
 
     const handleSave = async () => {
         try {
-            await axios.patch("/api/worker/saveworker", workerData); // workerData 배열을 서버에 보냄
+            await axios.patch("http://localhost:8080/api/worker/saveworker", workerData); // workerData 배열을 서버에 보냄
             alert("작업자 정보가 성공적으로 저장되었습니다.");
             setIsEditing(false);
         } catch (error) {
