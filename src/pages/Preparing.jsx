@@ -3,6 +3,7 @@ import Header from '../components/layout/Header';
 import Navbar from '../components/molecules/Navbar';
 import styled from 'styled-components';
 
+
 const MainWrapper = styled.div`
     display: flex; /* Flexbox로 자식 요소를 가로로 정렬 */
     width: 1920px; /* 전체 레이아웃 너비 */    

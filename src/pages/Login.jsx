@@ -28,20 +28,6 @@ const LoginWrapper = styled.div`
     align-items:center;
 `
 
-
-const LinksWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* 링크 간격 설정 */
-    margin-top: 20px;
-`;
-
-const PageContainer = styled.div`
-    width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
-    max-width: 1920px; /* 최대 너비 고정 */
-    margin: 0 auto; /* 중앙 정렬 */
-    position: relative; /* 자식 요소 기준점 설정 */
-`;
 const Message = styled.div`
   font-size: 14px;
   line-height: 20px;
@@ -104,6 +90,8 @@ const Login = () => {
             //localStorage.setItem("token", token); // 로컬 스토리지에 토큰을 저장합니다.
             setMessage("로그인 되었습니다.");
             setIsError(false);
+            localStorage.setItem("username", username);
+
             navigate("/Home");
             } else {
             setMessage("아이디 또는 비밀번호가 잘못 입력되었습니다.");
@@ -127,7 +115,6 @@ const Login = () => {
                 username = "로그인해주세요"
             />
 
-            <PageContainer>
                 <LoginWrapper>
                     <UserImg src="/assets/Icon/Login/Login_Userimg.svg"/>
                     <InputWrapper>
@@ -156,7 +143,6 @@ const Login = () => {
 
 
                 </LoginWrapper>
-            </PageContainer>
         </>
     );
 } 

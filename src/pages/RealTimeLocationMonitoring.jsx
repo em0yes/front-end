@@ -6,7 +6,12 @@ import { setupWebSocket } from '../websocket';
 import styled from 'styled-components';
 
 
-
+const PageContainer = styled.div`
+    width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
+    max-width: 1920px; /* 최대 너비 고정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    position: relative; /* 자식 요소 기준점 설정 */
+`;
 const FloorButtonWrapper = styled.div`
     width:400px;
     height:840px;
@@ -18,9 +23,9 @@ const FloorButtonWrapper = styled.div`
 
 const Map = styled.div`
     display:flex;
-    width: 1920px;
+    width: 100%;
     height:870px;
-    margin: 0 auto; /* 중앙 정렬 */
+    /* margin: 0 auto; 중앙 정렬 */
 
     justify-content:space-between;
 `;
@@ -102,7 +107,18 @@ function  RealTimeLocationMonitoring() {
     }, [lastUpdateTimes]);
     
 
+    // 특정 구역 하이라이트 함수
+    const highlightZone = (zoneId) => {
+        const zoneElement = document.getElementById(zoneId);
+        if (zoneElement) {
+            zoneElement.style.stroke = '#FAFABE';
+            zoneElement.style.strokeWidth = '2';
+            zoneElement.style.fill = '#f4ff77';
     
+            // GIF 이미지 추가
+            addGifToZone(zoneId, "/assets/Icon/Main/Main_iconlocation.gif");
+        }
+    };
     const addGifToZone = (zoneId, gifPath) => {
         const zoneElement = document.getElementById(zoneId);
         if (zoneElement) {
@@ -126,18 +142,7 @@ function  RealTimeLocationMonitoring() {
         }
     };
     
-    // 특정 구역 하이라이트 함수
-    const highlightZone = (zoneId) => {
-        const zoneElement = document.getElementById(zoneId);
-        if (zoneElement) {
-            zoneElement.style.stroke = '#FAFABE';
-            zoneElement.style.strokeWidth = '2';
-            zoneElement.style.fill = '#f4ff77';
     
-            // GIF 이미지 추가
-            addGifToZone(zoneId, "/assets/Icon/Main/Main_iconlocation.gif");
-        }
-    };
     
     // 모든 구역 초기화 함수
     const resetZones = () => {
@@ -178,7 +183,7 @@ function  RealTimeLocationMonitoring() {
                 title="실시간 위치 모니터링" 
                 username="admin"
         />
-
+<PageContainer>
         <Map>
             <Navbar 
                 middleIcon = "/assets/Icon/Navbar/Navbar_searchIcon.svg"
@@ -717,7 +722,7 @@ function  RealTimeLocationMonitoring() {
             </FloorButtonWrapper>
                 
         </Map>
-
+        </PageContainer>
 
     </>
     );
