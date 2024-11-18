@@ -51,31 +51,6 @@ function SearchWorker() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showMap, setShowMap] = useState(false); // 지도 표시 여부
 
-<<<<<<< HEAD
-    // 특정 작업자를 검색하는 함수
-    const handleSearchWorker = async (workerName) => {
-        try {
-            setErrorMessage(""); // 오류 메시지 초기화
-            const response = await axios.get(`http://localhost:8080/api/worker/search`, {
-                params: { worker: workerName }
-            });
-            console.log("작업자 실시간 위치: ", response.data.scanner ,"작업자: ", response.data.worker);
-            setSearchedWorkerLocation({
-                ...response.data.scanner, // scanner 객체의 데이터 추가
-                worker: response.data.worker // worker 데이터를 추가
-            });
-
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                setErrorMessage("해당 작업자의 최근 위치 정보가 없습니다.");
-            } else {
-                console.error('작업자 데이터 검색 중 오류:', error);
-                setErrorMessage("작업자 데이터를 검색하는 중에 오류가 발생했습니다.");
-            }
-            setSearchedWorkerLocation(null);
-        }
-    };
-=======
   const handleSearchWorker = async (workerName) => {
     try {
       setErrorMessage(""); // 오류 메시지 초기화
@@ -97,7 +72,6 @@ function SearchWorker() {
       setShowMap(false); // 오류 발생 시 지도 숨기기
     }
   };
->>>>>>> c2830b735c03d0acda71794d9b96ba21cc28b997
 
   const highlightZone = (zoneId) => {
     const zoneElement = document.getElementById(zoneId);
