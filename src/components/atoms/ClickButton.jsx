@@ -21,7 +21,9 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center; /* 텍스트를 정 가운데로 정렬 */
-
+    &:hover {
+        opacity: 0.8;
+    }
 `
 
 function ClickButton({text, onClick}) {

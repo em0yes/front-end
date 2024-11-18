@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/layout/Header";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -27,17 +27,27 @@ const BeaconScannerButton = styled.img`
     width: 80px;
     height: 120px;
 
-    /* 오른쪽 끝에서 약간 떨어지게 (1920px 범위 초과 방지) */
-    right: max(calc((100% - 1920px) / 2 + 60px), 60px); /* 60px을 최소값으로 설정 */
+    /* 1920px 너비를 기준으로 오른쪽 끝에서 약간 떨어지게 */
+    right: calc((100% - 1920px) / 10 + 60px); /* 중앙 정렬된 레이아웃의 오른쪽 기준으로 30px 떨어짐 */
     top: 16px; /* 고정된 높이 */
 `;
 
 function Home() {
+    const [username, setUsername] = useState("Guest");
+    
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username"); // 로컬스토리지에서 "username" 키로 값 가져오기
+        if (storedUsername) {
+            setUsername(storedUsername); // 값이 존재하면 상태 업데이트
+        }
+    }, []);
+
+
     return (
         <>
-            <Header 
+            <Header
                 title="장소 선택"
-                username="admin"
+                username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
             />
             <PageContainer>
                 <Link to="/WorkerMapping">

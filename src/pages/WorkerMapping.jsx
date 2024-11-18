@@ -30,7 +30,7 @@ const InputWorkerWrapper = styled.div`
 
 const ScannerBox = styled.div`
     width: 200px;
-    height: 400px;
+    height: 450px;
     text-align: center;
     margin: 20px;
 `;
@@ -53,7 +53,8 @@ const InputField = styled.input`
 
 const WorkerName = styled.h4`
     margin: 0;
-    font-size:20px;
+    white-space:nowrap;
+    /* font-size:20px; */
     display: ${(props) => (props.editable ? "none" : "block")}; /* 수정 모드에서는 숨김 */
 `;
 
@@ -83,14 +84,13 @@ const ActionButton = styled.button`
     }
 `;
 const XButton = styled.img`
-    z-index: 1;
-    position: absolute; /* 부모 컨테이너(PageContainer)를 기준으로 위치 고정 */
+    position:absolute;
     width: 60px;
     height: 60px;
-
-    /* 오른쪽 끝에서 약간 떨어지게 (1920px 범위 초과 방지) */
-    right: max(calc((100% - 1920px) / 2 + 60px), 60px); /* 60px을 최소값으로 설정 */
     top: 16px; /* 고정된 높이 */
+    right: calc((100% - 1920px) / 10 + 60px); /* 중앙 정렬된 레이아웃의 오른쪽 기준으로 30px 떨어짐 */
+    z-index: 1;
+
 `;
 function WorkerMapping() {
     const [workerData, setWorkerData] = useState([
@@ -150,13 +150,13 @@ function WorkerMapping() {
 
             <PageContainer>
                 <WorkerMappingWrapper>
-                    <Link to="/Home">
-                        <XButton src="/assets/Icon/Main/Xcircle.svg" />
-                    </Link>
+
+
+                    <Link to="/Home"><XButton src="/assets/Icon/Main/Xcircle.svg" /></Link>
                     <InputWorkerWrapper>
                         {workerData.map((item) => (
                             <ScannerBox key={item.scanner_id}>
-                                <h3>BLE Scanner {item.scanner_id}</h3>
+                                <h2>BLE Scanner {item.scanner_id}</h2>
                                 <ScannerImage
                                     src="/assets/Icon/Main/BeaconScanner.svg"
                                     alt={`Scanner ${item.scanner_id}`}
