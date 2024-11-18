@@ -98,7 +98,7 @@ const SearchWorkerBox = ({ onSearch, workerData, errorMessage }) => {
             )}
 
             {/* 검색 결과 표시 */}
-            {workerData && (
+            {workerData ? (
                 <InfoTable>
                     <InfoRow>
                         <Label>작업자:</Label>
@@ -112,7 +112,22 @@ const SearchWorkerBox = ({ onSearch, workerData, errorMessage }) => {
                         <Label>현재 위치:</Label>
                         <Value>{workerData.zone}</Value>
                     </InfoRow>
+                    <InfoRow>
+                        <Label>층:</Label>
+                        <Value>{workerData.floor}</Value>
+                    </InfoRow>
+                    <InfoRow>
+                        <Label>최근 업데이트:</Label>
+                        <Value>{new Date(workerData.timestamp).toLocaleString()}</Value>
+                    </InfoRow>
                 </InfoTable>
+            ) : (
+                // 검색 결과가 없을 때 표시
+                !errorMessage && (
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        검색 결과가 없습니다.
+                    </div>
+                )
             )}
         </SearchWorkerWrapper>
     );

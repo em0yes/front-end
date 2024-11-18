@@ -27,8 +27,12 @@ function SearchWorker() {
             const response = await axios.get(`http://localhost:8080/api/worker/search`, {
                 params: { worker: workerName }
             });
-            console.log("작업자 실시간 위치: ", response.data.scanner);
-            setSearchedWorkerLocation(response.data.scanner);
+            console.log("작업자 실시간 위치: ", response.data.scanner ,"작업자: ", response.data.worker);
+            setSearchedWorkerLocation({
+                ...response.data.scanner, // scanner 객체의 데이터 추가
+                worker: response.data.worker // worker 데이터를 추가
+            });
+
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 setErrorMessage("해당 작업자의 최근 위치 정보가 없습니다.");
