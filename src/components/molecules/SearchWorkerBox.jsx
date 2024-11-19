@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const SearchWorkerWrapper = styled.div`
-  width: 95%;
-  height: 800px;
+  width: 90%;
+  min-height: auto;
   background: #ffffff;
   box-shadow: 0px 0px 20px rgba(188, 188, 188, 0.6);
   border-radius: 30px;
@@ -12,7 +12,7 @@ const SearchWorkerWrapper = styled.div`
   align-items: center;
   justify-content: space-between; /* 요소 간 간격 분배 */
   padding: 30px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 `;
 
 const SearchInputWrapper = styled.div`
@@ -24,7 +24,7 @@ const SearchInputWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
 `;
 
 const InfoTable = styled.div`

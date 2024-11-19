@@ -6,12 +6,26 @@ import { setupWebSocket } from '../websocket';
 import styled from 'styled-components';
 
 
+
+
 const PageContainer = styled.div`
     width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
-    max-width: 1920px; /* 최대 너비 고정 */
-    margin: 0 auto; /* 중앙 정렬 */
+    width: 1920px;
     position: relative; /* 자식 요소 기준점 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 자식 요소 중앙 정렬 */
 `;
+
+const Map = styled.div`
+    display:flex;
+    width: 100%;
+    height:840px;
+    /* margin: 0 auto; 중앙 정렬 */
+    justify-content:space-between;
+`;
+
+
 const FloorButtonWrapper = styled.div`
     width:400px;
     height:840px;
@@ -21,14 +35,6 @@ const FloorButtonWrapper = styled.div`
     justify-content:space-evenly;
 `;
 
-const Map = styled.div`
-    display:flex;
-    width: 100%;
-    height:870px;
-    /* margin: 0 auto; 중앙 정렬 */
-
-    justify-content:space-between;
-`;
 
 const BlurredMapImageWrapper = styled.div`
     flex: 1; /* 나머지 공간을 지도에 할당 */
@@ -38,9 +44,11 @@ const BlurredMapImageWrapper = styled.div`
     align-items: center; /* 세로 중앙 정렬 */
     position: relative; /* Overlay를 위한 relative */
 `;
+
+
 const BlurredMapImage = styled.img`
     margin-left:50px;
-    width: 1083px;
+    width: 1084px;
     height: 840px;
     filter: ${(props) => (props.blur ? "blur(10px)" : "none")}; // blur 여부에 따라 필터 적용
 `;
@@ -60,7 +68,14 @@ function  RealTimeLocationMonitoring() {
     const [locations, setLocations] = useState({});
     const [lastUpdateTimes, setLastUpdateTimes] = useState({}); // 각 scanner_id별로 마지막 수신 시간을 저장
     const [activeFloor, setActiveFloor] = useState(3); // 초기 활성화 상태를 3층으로 설정
-
+    const [username, setUsername] = useState("Guest");
+    
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username"); // 로컬스토리지에서 "username" 키로 값 가져오기
+        if (storedUsername) {
+            setUsername(storedUsername); // 값이 존재하면 상태 업데이트
+        }
+    }, []);
 
 
     // 웹소켓 설정
@@ -142,6 +157,34 @@ function  RealTimeLocationMonitoring() {
         }
     };
     
+    const addWorkerCountToZone = (zoneId, workerCount) => {
+        const zoneElement = document.getElementById(zoneId);
+        if (zoneElement) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        const bbox = zoneElement.getBBox();
+        const centerX = bbox.x + bbox.width / 2;
+        const centerY = bbox.y + bbox.height / 2;
+    
+        // 기존 텍스트 제거
+        const existingText = zoneElement.parentNode.querySelector(`text[data-zone='${zoneId}']`);
+        if (existingText) {
+        zoneElement.parentNode.removeChild(existingText);
+        }
+    
+        // 작업자 수 표시
+        const workerText = document.createElementNS(svgNS, "text");
+        workerText.setAttribute("x", centerX);
+        workerText.setAttribute("y", centerY);
+        workerText.setAttribute("text-anchor", "middle");
+        workerText.setAttribute("dominant-baseline", "central");
+        workerText.setAttribute("font-size", "14");
+        workerText.setAttribute("fill", "red");
+        workerText.setAttribute("data-zone", zoneId);
+        workerText.textContent = workerCount;
+    
+        zoneElement.parentNode.appendChild(workerText);
+    }
+    };
     
     
     // 모든 구역 초기화 함수
@@ -179,11 +222,12 @@ function  RealTimeLocationMonitoring() {
     return (
         <>
 
+
+        <PageContainer>
         <Header 
                 title="실시간 위치 모니터링" 
-                username="admin"
+                username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
         />
-<PageContainer>
         <Map>
             <Navbar 
                 middleIcon = "/assets/Icon/Navbar/Navbar_searchIcon.svg"
@@ -192,7 +236,7 @@ function  RealTimeLocationMonitoring() {
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1032 800"
-                style={{ width: '1084px', height: '840px', marginLeft:"50px" ,marginTop: "15px"
+                style={{ width: '1032px', height: '800px', marginLeft:"50px" ,marginTop: "15px"
                 }}
                 fill="cover"
                 >

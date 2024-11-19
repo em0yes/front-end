@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from "react-router-dom"; // Link 컴포넌트 추가
+import { useNavigate } from "react-router-dom";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -8,39 +8,37 @@ const HeaderWrapper = styled.header`
   height: 120px;
   background-color: #ffffff;
   display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: space-between; /* 좌우 간격 유지 */
+  align-items: center;
+  justify-content: space-between;
   margin: 0 auto;
 `;
 
 const TitleWrapper = styled.div`
-  flex: 1; /* 너비를 유연하게 설정 */
+  flex: 1;
   display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: space-between; /* 제목과 사용자 정보 간격 유지 */
+  align-items: center;
+  justify-content: space-between;
   margin: 20px 10px 0px 20px;
   border-bottom: 3px solid #E9E9E9;
-
 `;
 
 const Title = styled.h1`
   font-size: 28px;
   color: #8F8F8F;
-  margin: 0; /* 여백 제거 */
-  white-space: nowrap; /* 제목이 줄바꿈되지 않도록 설정 */
-  overflow: hidden; /* 내용이 너무 길 경우 숨김 처리*/ 
-  text-overflow: ellipsis; /*내용이 넘칠 경우 생략 표시*/
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Logo = styled.img`
   height: 100px;
 `;
+
 const UserIconWrapper = styled.div`
-  float:right;
   display: flex;
-  margin:0px 10px 0px 10px;
-  align-items: center; //세로 중앙 정렬
-  /* justify-content: flex-end; 오른쪽 정렬 */
+  align-items: center;
+  position: relative;
 `;
 
 const UserImg = styled.img`
@@ -50,23 +48,74 @@ const UserImg = styled.img`
 
 const DownIcon = styled.img`
   height: 30px;
+  cursor: pointer;
 `;
 
 const Username = styled.p`
   font-size: 30px;
   font-weight: bolder;
-  margin: 0 10px; /* 상하 여백 제거 및 좌우 여백 추가 */
+  margin: 0 10px;
   color: #7E7E7E;
 `;
 
-const Header = ({ title, username }) => {
+const Dropdown = styled.div`
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+  z-index: 10;
+`;
+
+const LogoutButton = styled.button`
+  background: none;
+  color: white;
+  border: 1px solid white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background: white;
+    color: black;
+  }
+`;
+
+const Header = ({ title }) => {
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [username, setUsername] = useState(localStorage.getItem('username') || '로그인해주세요');
+  const [isLoggedOut, setIsLoggedOut] = useState(!localStorage.getItem('username'));
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleToggleDropdown = () => {
+    setIsDropdownVisible((prev) => !prev); // Dropdown 표시/숨김 상태 토글
+  };
 
-    localStorage.removeItem("username"); // 로컬스토리지에서 username 제거
-    navigate("/"); // 로그인 페이지로 이동
-};
+  const handleLogout = () => {
+    if (!isLoggedOut) {
+      localStorage.removeItem('username');
+      setUsername('로그인');
+      setIsLoggedOut(true);
+      setIsDropdownVisible(false); // Dropdown 닫기
+      navigate("/");
+    } else {
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+      setIsLoggedOut(false);
+    }
+  }, []);
+
   return (
     <HeaderWrapper>
       <Logo src="/assets/Icon/Header/Header_logo.svg" alt="Logo" />
@@ -75,7 +124,20 @@ const Header = ({ title, username }) => {
         <UserIconWrapper>
           <UserImg src="/assets/Icon/Header/Header_userimg.svg" alt="User Icon" />
           <Username>{username}</Username>
-          <DownIcon onClick={handleLogout} src="/assets/Icon/Header/Header_downIcon.svg" alt="Down Icon" />
+          <DownIcon
+            onClick={handleToggleDropdown}
+            src={
+              isDropdownVisible
+                ? "/assets/Icon/Header/Header_UpIcon.svg"
+                : "/assets/Icon/Header/Header_DownIcon.svg"
+            }
+            alt="Toggle Dropdown"
+          />
+          <Dropdown isVisible={isDropdownVisible}>
+            <LogoutButton onClick={handleLogout}>
+              {isLoggedOut ? 'Login' : 'Logout'}
+            </LogoutButton>
+          </Dropdown>
         </UserIconWrapper>
       </TitleWrapper>
     </HeaderWrapper>

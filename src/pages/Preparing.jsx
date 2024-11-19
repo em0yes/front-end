@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import Header from '../components/layout/Header';
 import Navbar from '../components/molecules/Navbar';
 import styled from 'styled-components';
@@ -42,11 +42,19 @@ const SoonOverlay = styled.img`
 `;
 
 function Preparing() {
+    const [username, setUsername] = useState("Guest");
+    
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username"); // 로컬스토리지에서 "username" 키로 값 가져오기
+        if (storedUsername) {
+            setUsername(storedUsername); // 값이 존재하면 상태 업데이트
+        }
+    }, []);
     return (
         <>
             <Header 
                 title="실시간 위치 모니터링" 
-                username="admin"
+                username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
             />
             <MainWrapper>
                 {/* 네브바 */}                    

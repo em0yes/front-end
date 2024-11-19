@@ -6,9 +6,11 @@ import PlaceButton from "../components/atoms/PlaceButton";
 
 const PageContainer = styled.div`
     width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
-    max-width: 1920px; /* 최대 너비 고정 */
-    margin: 0 auto; /* 중앙 정렬 */
+    width: 1920px;
     position: relative; /* 자식 요소 기준점 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 자식 요소 중앙 정렬 */
 `;
 
 const SearchPlaceWrapper = styled.div`
@@ -28,8 +30,8 @@ const BeaconScannerButton = styled.img`
     height: 120px;
 
     /* 1920px 너비를 기준으로 오른쪽 끝에서 약간 떨어지게 */
-    right: calc((100% - 1920px) / 10 + 60px); /* 중앙 정렬된 레이아웃의 오른쪽 기준으로 30px 떨어짐 */
-    top: 16px; /* 고정된 높이 */
+    right: max(calc((100% - 1920px) / 2 + 140px), 140px); /* 120px을 최소값으로 설정 */
+    top: 160px; /* 고정된 높이 */
 `;
 
 function Home() {
@@ -45,11 +47,12 @@ function Home() {
 
     return (
         <>
+
+            <PageContainer>
             <Header
                 title="장소 선택"
                 username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
             />
-            <PageContainer>
                 <Link to="/WorkerMapping">
                     <BeaconScannerButton src="/assets/Icon/Main/BeaconScannerIcon.svg" />
                 </Link>

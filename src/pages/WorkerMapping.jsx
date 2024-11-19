@@ -6,10 +6,12 @@ import styled from "styled-components";
 import axios from "axios";
 
 const PageContainer = styled.div`
-    width: 100%;
-    max-width: 1920px;
-    margin: 0 auto;
-    position: relative;
+    width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
+    width: 1920px;
+    position: relative; /* 자식 요소 기준점 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 자식 요소 중앙 정렬 */
 `;
 
 const WorkerMappingWrapper = styled.div`
@@ -101,6 +103,14 @@ function WorkerMapping() {
         { scanner_id: 5, worker: "" },
     ]);
     const [isEditing, setIsEditing] = useState(false);
+    const [username, setUsername] = useState("Guest");
+    
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username"); // 로컬스토리지에서 "username" 키로 값 가져오기
+        if (storedUsername) {
+            setUsername(storedUsername); // 값이 존재하면 상태 업데이트
+        }
+    }, []);
 
     // 초기 데이터 로드
     useEffect(() => {
@@ -146,7 +156,9 @@ function WorkerMapping() {
 
     return (
         <>
-            <Header title="스캐너 별 작업자 매핑" username="admin" />
+            <Header title="스캐너 별 작업자 매핑"         
+            username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
+            />
 
             <PageContainer>
                 <WorkerMappingWrapper>

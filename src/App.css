@@ -1,3 +1,4 @@
+
 html, body, #root {
   width: 100%;          /* 100%로 수정 */
   height: 100%;         /* 부모 요소 기준 */
@@ -10,11 +11,6 @@ html, body, #root {
 .App {
   display: flex;
   flex-direction: column;
-  width: 100%;          /* 100%로 수정 */
-  height: 100%;
-}
-
-.location-icon:hover .worker-id {
-  visibility: visible;
-  display: block;       /* 호버 시 제대로 표시되도록 */
+  
+ 
 }
