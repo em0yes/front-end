@@ -89,7 +89,7 @@ const XButton = styled.img`
     position:absolute;
     width: 60px;
     height: 60px;
-    top: 16px; /* 고정된 높이 */
+    top: 160px; /* 고정된 높이 */
     right: calc((100% - 1920px) / 10 + 60px); /* 중앙 정렬된 레이아웃의 오른쪽 기준으로 30px 떨어짐 */
     z-index: 1;
 
@@ -156,15 +156,16 @@ function WorkerMapping() {
 
     return (
         <>
-            <Header title="스캐너 별 작업자 매핑"         
-            username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
-            />
+            
 
             <PageContainer>
+                <Header title="스캐너 별 작업자 매핑"         
+                username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
+                />
                 <WorkerMappingWrapper>
 
-
-                    <Link to="/Home"><XButton src="/assets/Icon/Main/Xcircle.svg" /></Link>
+                <Link to="/Home"><XButton src="/assets/Icon/Main/Xcircle.svg" /></Link>
+                    
                     <InputWorkerWrapper>
                         {workerData.map((item) => (
                             <ScannerBox key={item.scanner_id}>

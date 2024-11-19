@@ -4,7 +4,6 @@ html, body, #root {
   height: 100%;         /* 부모 요소 기준 */
   margin: 0;
   padding: 0;
-  overflow-x: auto;   /* 가로 스크롤만 허용 */
   overflow-y: auto;     /* 세로 스크롤 허용 */
 }
 
