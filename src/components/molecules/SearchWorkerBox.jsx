@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const SearchWorkerWrapper = styled.div`
-  width: 90%;
-  min-height: auto;
+  width: 80%;
+  min-height: 400px;
   background: #ffffff;
   box-shadow: 0px 0px 20px rgba(188, 188, 188, 0.6);
   border-radius: 30px;
@@ -44,6 +44,8 @@ const SearchInput = styled.input`
 `;
 
 const SearchButton = styled.img`
+  width:30px;
+  height:30px;
   border: none;
   padding: 10px;
   background: none;
@@ -94,27 +96,36 @@ const SearchWorkerBox = ({ onSearch, workerData, errorMessage }) => {
         <div style={{ textAlign: "center", color: "red", marginTop: "10px" }}>
           {errorMessage}
         </div>
-      )}
-      {workerData && (
-        <InfoTable>
-            <InfoRow>
-                <Label>작업자:</Label>
-                <Value>{workerData.worker}</Value>
-        </InfoRow>
-        <InfoRow>
-            <Label>Scanner ID:</Label>
-            <Value>{workerData.scanner_id}</Value>
-        </InfoRow>
-        <InfoRow>
-            <Label>현재 위치:</Label>
-            <Value>{workerData.zone}</Value>
-        </InfoRow>
-        <InfoRow>
-            <Label>층:</Label>
-            <Value>{workerData.floor}</Value>
-        </InfoRow>
+      )}      
 
-        </InfoTable>
+
+      
+      {workerData 
+      && 
+      (
+        <>
+          <h2 style={{ fontSize:"16px",marginTop:"30px",textAlign: "center" ,flexWrap: "wrap" }}>{workerData.worker} 님의 위치 검색 결과</h2>
+
+          <InfoTable>
+              <InfoRow>
+                  <Label>작업자:</Label>
+                  <Value>{workerData.worker}</Value>
+          </InfoRow>
+          <InfoRow>
+              <Label>Scanner ID:</Label>
+              <Value>{workerData.scanner_id}</Value>
+          </InfoRow>
+          <InfoRow>
+              <Label>현재 위치:</Label>
+              <Value>{workerData.zone}</Value>
+          </InfoRow>
+          <InfoRow>
+              <Label>층:</Label>
+              <Value>{workerData.floor}</Value>
+          </InfoRow>
+
+          </InfoTable>
+        </>
       )}
     </SearchWorkerWrapper>
   );

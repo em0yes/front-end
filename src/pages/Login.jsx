@@ -14,6 +14,14 @@ const LoginText = styled.h1`
     color: #585858;
 `;
 
+const PageContainer = styled.div`
+    width: 100%; /* 부모 컨테이너는 항상 화면 전체를 차지 */
+    width: 1920px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 자식 요소 중앙 정렬 */
+`;
+
 const LoginWrapper = styled.div`
     width: 600px;
     height: 750px; 
@@ -109,9 +117,9 @@ const Login = () => {
     };
 
     return(
-        <>
+        <PageContainer>
             <Header 
-                title =""
+                title ="Login"
                 username = "로그인해주세요"
             />
 
@@ -143,7 +151,7 @@ const Login = () => {
 
 
                 </LoginWrapper>
-        </>
+        </PageContainer>
     );
 } 
 

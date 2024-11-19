@@ -16,7 +16,8 @@ const PageContainer = styled.div`
 `;
 const SearchArea = styled.div`
   display: flex;
-  height:800px;
+  height: 800px;
+  justify-content:center;
   flex-direction: column;
   align-items: center;
   width: ${({ $showMap }) => ($showMap ? "25%" : "100%")}; /* 검색폼 너비 조정 */
@@ -35,7 +36,6 @@ const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 20px;
 `;
 
 const MapPlaceholder = styled.div`
@@ -143,11 +143,12 @@ const resetZones = () => {
 
   return (
     <>
+      
+      <PageContainer>
       <Header 
         title="작업자 위치 검색" 
         username={username} // 로컬스토리지에서 가져온 사용자 이름 전달
-                      />
-      <PageContainer>
+        />
         <SearchContainer>
         <Navbar 
                 middleIcon = "/assets/Icon/Navbar/Navbar_Monitor.svg"

@@ -54,6 +54,8 @@ const BlurredMapImage = styled.img`
 `;
 
 const SoonOverlay = styled.img`
+    margin-left: 50px;
+
     position: absolute;
     top: 50%;
     left: 50%;

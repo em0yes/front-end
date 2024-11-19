@@ -18,7 +18,8 @@ const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 10px 0px 20px;
+  margin: 20px 10px 0px 0px;
+  padding-bottom: 10px;
   border-bottom: 3px solid #E9E9E9;
 `;
 
@@ -33,6 +34,7 @@ const Title = styled.h1`
 
 const Logo = styled.img`
   height: 100px;
+  margin-right:20px;
 `;
 
 const UserIconWrapper = styled.div`
@@ -66,6 +68,7 @@ const Dropdown = styled.div`
   color: white;
   border-radius: 8px;
   padding: 10px;
+  margin:5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
   z-index: 10;
