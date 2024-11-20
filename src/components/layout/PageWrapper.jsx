@@ -83,9 +83,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column; /* 세로 방향으로 정렬 */
   min-height: 100vh;
-
   background-color: #fff;
   align-items: center;
+
   
 `;
 
@@ -97,8 +97,15 @@ const Content = styled.div`
   background-color: #fff;
   position: relative; /* 자식 요소 기준점 설정 */
   width: 100%;
-  max-width: 1920px; /* 최대 너비 설정 */
-  min-height: 980px;
+  width: 1920px; /* 최대 너비 설정 */
+  height: 980px;
+  transform: scale(1); /* 기본 배율 */
+  transform-origin:center; /* 중앙 기준으로 확대/축소 */
+
+  margin: 0 auto; /*중앙 정렬*/ 
+
+
+
 `;
 
 const PageWrapper = ({ children }) => {
