@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavbarWrapper = styled.div`
-  width: 160px;
-  height: 840px;
+  /* width: 160px;
+  height: 840px; */
   padding: 30px;
   display: flex;
   flex-direction: column;

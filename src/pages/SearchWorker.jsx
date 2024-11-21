@@ -16,7 +16,7 @@ const PageContainer = styled.div`
 `;
 const SearchArea = styled.div`
   display: flex;
-  height: 800px;
+  height: 840px;
   justify-content:center;
   flex-direction: column;
   align-items: center;

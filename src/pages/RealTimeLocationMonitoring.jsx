@@ -48,8 +48,8 @@ const BlurredMapImageWrapper = styled.div`
 
 const BlurredMapImage = styled.img`
     margin-left:50px;
-    width: 1084px;
-    height: 840px;
+    width: 1032px;
+    height: 800px;
     filter: ${(props) => (props.blur ? "blur(10px)" : "none")}; // blur 여부에 따라 필터 적용
 `;
 
