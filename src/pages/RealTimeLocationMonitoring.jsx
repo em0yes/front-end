@@ -244,30 +244,30 @@ function  RealTimeLocationMonitoring() {
                 >
                 <g id="Map">
                 <g id="Hall_B">
-                    <path id="A_24" d="M0 732V656H43V732H0Z" fill="#D9D9D9" />
-                    <path id="A_23" d="M43 732V656H86V732H43Z" fill="#D9D9D9"/>
-                    <path id="A_22" d="M86 732V656H129V732H86Z" fill="#D9D9D9"/>
-                    <path id="A_21" d="M129 732V656H172V732H129Z" fill="#D9D9D9"/>
-                    <path id="A_20" d="M172 732V656H215V732H172Z" fill="#D9D9D9"/>
-                    <path id="A_19" d="M258 732H215V656H249V652H258V732Z" fill="#D9D9D9"/>
-                    <path id="A_18" d="M301 762H274V732H258V652H301V762Z" fill="#D9D9D9"/>
-                    <path id="A_17" d="M344 652V775H319V762H301V652H344Z" fill="#D9D9D9"/>
-                    <path id="A_16" d="M387 652H344V732H387V652Z" fill="#D9D9D9"/>
-                    <path id="A_15" d="M430 652H387V732H430V652Z" fill="#D9D9D9"/>
-                    <path id="A_14" d="M473 652H430V732H473V652Z" fill="#D9D9D9"/>
-                    <path id="A_13" d="M516 732H473V652H516V732Z" fill="#D9D9D9"/>
-                    <path id="A_12" d="M559 732H516V652H559V732Z" fill="#D9D9D9"/>
-                    <path id="A_11" d="M602 732H559V652H602V732Z" fill="#D9D9D9"/>
-                    <path id="A_10" d="M645 732H602V652H645V732Z" fill="#D9D9D9"/>
-                    <path id="A_9" d="M645 732V652H688V732H645Z" fill="#D9D9D9"/>
-                    <path id="A_8" d="M688 732V652H731V732H688Z" fill="#D9D9D9"/>
-                    <path id="A_7" d="M731 732V652H774V732H731Z" fill="#D9D9D9"/>
-                    <path id="A_6" d="M802 732H774V652H802V642H817V747H802V732Z" fill="#D9D9D9"/>
-                    <path id="A_5" d="M860 652V747H817V642H858V652H860Z" fill="#D9D9D9"/>
-                    <path id="A_4" d="M860 747V652H903V747H860Z" fill="#D9D9D9"/>
-                    <path id="A_3" d="M946 732H903V652H946V732Z" fill="#D9D9D9"/>
-                    <path id="A_2" d="M989 732V652H946V732H989Z" fill="#D9D9D9"/>
-                    <path id="A_1" d="M989 732V652H1032V732H989Z" fill="#D9D9D9"/>
+                    <path id="24" d="M0 732V656H43V732H0Z" fill="#D9D9D9" />
+                    <path id="23" d="M43 732V656H86V732H43Z" fill="#D9D9D9"/>
+                    <path id="22" d="M86 732V656H129V732H86Z" fill="#D9D9D9"/>
+                    <path id="21" d="M129 732V656H172V732H129Z" fill="#D9D9D9"/>
+                    <path id="20" d="M172 732V656H215V732H172Z" fill="#D9D9D9"/>
+                    <path id="19" d="M258 732H215V656H249V652H258V732Z" fill="#D9D9D9"/>
+                    <path id="18" d="M301 762H274V732H258V652H301V762Z" fill="#D9D9D9"/>
+                    <path id="17" d="M344 652V775H319V762H301V652H344Z" fill="#D9D9D9"/>
+                    <path id="16" d="M387 652H344V732H387V652Z" fill="#D9D9D9"/>
+                    <path id="15" d="M430 652H387V732H430V652Z" fill="#D9D9D9"/>
+                    <path id="14" d="M473 652H430V732H473V652Z" fill="#D9D9D9"/>
+                    <path id="13" d="M516 732H473V652H516V732Z" fill="#D9D9D9"/>
+                    <path id="12" d="M559 732H516V652H559V732Z" fill="#D9D9D9"/>
+                    <path id="11" d="M602 732H559V652H602V732Z" fill="#D9D9D9"/>
+                    <path id="10" d="M645 732H602V652H645V732Z" fill="#D9D9D9"/>
+                    <path id="9" d="M645 732V652H688V732H645Z" fill="#D9D9D9"/>
+                    <path id="8" d="M688 732V652H731V732H688Z" fill="#D9D9D9"/>
+                    <path id="7" d="M731 732V652H774V732H731Z" fill="#D9D9D9"/>
+                    <path id="6" d="M802 732H774V652H802V642H817V747H802V732Z" fill="#D9D9D9"/>
+                    <path id="5" d="M860 652V747H817V642H858V652H860Z" fill="#D9D9D9"/>
+                    <path id="4" d="M860 747V652H903V747H860Z" fill="#D9D9D9"/>
+                    <path id="3" d="M946 732H903V652H946V732Z" fill="#D9D9D9"/>
+                    <path id="2" d="M989 732V652H946V732H989Z" fill="#D9D9D9"/>
+                    <path id="1" d="M989 732V652H1032V732H989Z" fill="#D9D9D9"/>
                     </g>
                     <g id="320~328">
                     <g id="328">

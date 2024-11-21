@@ -132,7 +132,7 @@ const Header = ({ title }) => {
             src={
               isDropdownVisible
                 ? "/assets/Icon/Header/Header_UpIcon.svg"
-                : "/assets/Icon/Header/Header_DownIcon.svg"
+                : "/assets/Icon/Header/Header_downIcon.svg"
             }
             alt="Toggle Dropdown"
           />
