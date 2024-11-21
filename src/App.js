@@ -19,9 +19,9 @@ const App = () => {
           <Route path='/WorkerMapping' element={<WorkerMapping/>} />
           <Route path="/RealTimeLocationMonitoring" element={<RealTimeLocationMonitoring />} />
           <Route path="/SearchWorker" element={<SearchWorker />} />
-
         </Routes>
       </PageWrapper>
+      
     </Router>
   );
 };

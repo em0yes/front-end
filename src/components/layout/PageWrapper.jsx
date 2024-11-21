@@ -104,8 +104,6 @@ const Content = styled.div`
 
   margin: 0 auto; /*중앙 정렬*/ 
 
-
-
 `;
 
 const PageWrapper = ({ children }) => {
@@ -114,6 +112,8 @@ const PageWrapper = ({ children }) => {
   return (
     <Wrapper>
       <Content>{children}</Content>
+
+      
       {location.pathname !== "/" && <Footer />}
     </Wrapper>
   );

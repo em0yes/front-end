@@ -6,16 +6,18 @@ import styled from 'styled-components';
 const FooterWrapper = styled.footer`
   position:flex;
   bottom: 0;
-  width: 100%; /* 부모 컨테이너 기준으로 너비 설정 */
-  min-width:1920px;
+  width: 100%; /* 뷰포트 너비를 기준으로 설정 */
+  min-width: 1920px; /* 최대 너비를 컨텐츠와 일치 */
   height: 100px;
   background-color: #333;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* margin: 0 auto; 가운데 정렬 */
+  margin: 0 auto;
 `;
+
+
 
 const Footer = () => {
   return (

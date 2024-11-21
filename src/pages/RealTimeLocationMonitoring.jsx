@@ -159,34 +159,34 @@ function  RealTimeLocationMonitoring() {
         }
     };
     
-    const addWorkerCountToZone = (zoneId, workerCount) => {
-        const zoneElement = document.getElementById(zoneId);
-        if (zoneElement) {
-        const svgNS = "http://www.w3.org/2000/svg";
-        const bbox = zoneElement.getBBox();
-        const centerX = bbox.x + bbox.width / 2;
-        const centerY = bbox.y + bbox.height / 2;
+    // const addWorkerCountToZone = (zoneId, workerCount) => {
+    //     const zoneElement = document.getElementById(zoneId);
+    //     if (zoneElement) {
+    //     const svgNS = "http://www.w3.org/2000/svg";
+    //     const bbox = zoneElement.getBBox();
+    //     const centerX = bbox.x + bbox.width / 2;
+    //     const centerY = bbox.y + bbox.height / 2;
     
-        // 기존 텍스트 제거
-        const existingText = zoneElement.parentNode.querySelector(`text[data-zone='${zoneId}']`);
-        if (existingText) {
-        zoneElement.parentNode.removeChild(existingText);
-        }
+    //     // 기존 텍스트 제거
+    //     const existingText = zoneElement.parentNode.querySelector(`text[data-zone='${zoneId}']`);
+    //     if (existingText) {
+    //     zoneElement.parentNode.removeChild(existingText);
+    //     }
     
-        // 작업자 수 표시
-        const workerText = document.createElementNS(svgNS, "text");
-        workerText.setAttribute("x", centerX);
-        workerText.setAttribute("y", centerY);
-        workerText.setAttribute("text-anchor", "middle");
-        workerText.setAttribute("dominant-baseline", "central");
-        workerText.setAttribute("font-size", "14");
-        workerText.setAttribute("fill", "red");
-        workerText.setAttribute("data-zone", zoneId);
-        workerText.textContent = workerCount;
+    //     // 작업자 수 표시
+    //     const workerText = document.createElementNS(svgNS, "text");
+    //     workerText.setAttribute("x", centerX);
+    //     workerText.setAttribute("y", centerY);
+    //     workerText.setAttribute("text-anchor", "middle");
+    //     workerText.setAttribute("dominant-baseline", "central");
+    //     workerText.setAttribute("font-size", "14");
+    //     workerText.setAttribute("fill", "red");
+    //     workerText.setAttribute("data-zone", zoneId);
+    //     workerText.textContent = workerCount;
     
-        zoneElement.parentNode.appendChild(workerText);
-    }
-    };
+    //     zoneElement.parentNode.appendChild(workerText);
+    // }
+    // };
     
     
     // 모든 구역 초기화 함수
@@ -757,7 +757,7 @@ function  RealTimeLocationMonitoring() {
                 </BlurredMapImageWrapper>
             )}
             <FloorButtonWrapper>
-                {[1, 2, 3, 4,5].map((floor) => (
+                {[5, 4, 3, 2, 1].map((floor) => (
                 <FloorButton
                     key={floor}
                     floor={floor}
